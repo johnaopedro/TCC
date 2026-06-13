@@ -3,6 +3,12 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include <iostream>
+#ifndef CV_LOAD_IMAGE_GRAYSCALE
+#define CV_LOAD_IMAGE_GRAYSCALE cv::IMREAD_GRAYSCALE
+#endif
+#ifndef CV_FILLED
+#define CV_FILLED cv::FILLED
+#endif
 #include <cmath>
 
 using namespace std;
@@ -15,7 +21,7 @@ int main() {
 	float arr3[256] = { 0 };
 
 
-	Mat image = imread("trees.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+	Mat image = imread("input/trees.jpg", CV_LOAD_IMAGE_GRAYSCALE);
 
 
 	for (int i = 0; i < image.rows; i++) {
@@ -111,6 +117,10 @@ int main() {
 
 	namedWindow("Equalized Image", WINDOW_AUTOSIZE);
 	imshow("Equalized Image", myMat1);
+	imwrite("../tcc-outputs/005_original.png", image);
+	imwrite("../tcc-outputs/005_equalized.png", myMat1);
+	imwrite("../tcc-outputs/005_histogram_original.png", histog);
+	imwrite("../tcc-outputs/005_histogram_equalized.png", histog2);
 	waitKey(0);
 
 

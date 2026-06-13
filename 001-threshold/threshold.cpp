@@ -2,6 +2,12 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include <iostream>
+#ifndef CV_LOAD_IMAGE_GRAYSCALE
+#define CV_LOAD_IMAGE_GRAYSCALE cv::IMREAD_GRAYSCALE
+#endif
+#ifndef CV_FILLED
+#define CV_FILLED cv::FILLED
+#endif
 #include <cmath>
 
 using namespace std;
@@ -9,7 +15,7 @@ using namespace cv;
 
 int main() {
 
-	string imgname = "lena.png";
+	string imgname = "../tcc-images/sudoku.png";
 	int arr[256] = { 0 };
 
 	Mat original = imread(imgname, CV_LOAD_IMAGE_GRAYSCALE);
@@ -154,6 +160,12 @@ int main() {
 
 	namedWindow("square", WINDOW_AUTOSIZE);
 	imshow("square", square);
+	imwrite("../tcc-outputs/001_original.png", original);
+	imwrite("../tcc-outputs/001_binary.png", image2);
+	imwrite("../tcc-outputs/001_binary_inv.png", image3);
+	imwrite("../tcc-outputs/001_trunc.png", image4);
+	imwrite("../tcc-outputs/001_tozero.png", image5);
+	imwrite("../tcc-outputs/001_tozero_inv.png", image6);
 	waitKey(0);
 
 }

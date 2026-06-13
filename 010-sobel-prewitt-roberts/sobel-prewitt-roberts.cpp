@@ -3,6 +3,12 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include <iostream>
+#ifndef CV_LOAD_IMAGE_GRAYSCALE
+#define CV_LOAD_IMAGE_GRAYSCALE cv::IMREAD_GRAYSCALE
+#endif
+#ifndef CV_FILLED
+#define CV_FILLED cv::FILLED
+#endif
 #include<math.h>
 using namespace std;
 using namespace cv;
@@ -10,9 +16,9 @@ using namespace cv;
 int main()
 {
 	//Imagenes originales
-	const char* filenameD = "monalisa.jpg";
+	const char* filenameD = "../tcc-images/building.jpg";
 	Mat image = imread(filenameD, CV_LOAD_IMAGE_GRAYSCALE);
-	const char* filenameA = "penguin.png";
+	const char* filenameA = "../005-equalization/input/trees.jpg";
 	Mat pepperNoise = imread(filenameA, CV_LOAD_IMAGE_GRAYSCALE);
 	//Mats resutado
 	Mat blur(image.rows, image.cols, CV_8UC1);
@@ -362,10 +368,17 @@ int main()
 
 	namedWindow("Rob raiz", WINDOW_AUTOSIZE);
 	imshow("Rob raiz", raizRobR);
-	
-	
 
-
+	imwrite("../tcc-outputs/010_original.png", image);
+	imwrite("../tcc-outputs/010_sobel_H.png", sobelHR);
+	imwrite("../tcc-outputs/010_sobel_V.png", sobelVR);
+	imwrite("../tcc-outputs/010_sobel_magnitude.png", raizR);
+	imwrite("../tcc-outputs/010_prewitt_H.png", prewittHR);
+	imwrite("../tcc-outputs/010_prewitt_V.png", prewittVR);
+	imwrite("../tcc-outputs/010_prewitt_magnitude.png", raizPR);
+	imwrite("../tcc-outputs/010_robert_H.png", robertHR);
+	imwrite("../tcc-outputs/010_robert_V.png", robertVR);
+	imwrite("../tcc-outputs/010_robert_magnitude.png", raizRobR);
 
 	waitKey(0);
 }

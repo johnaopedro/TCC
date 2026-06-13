@@ -2,6 +2,12 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include <iostream>
+#ifndef CV_LOAD_IMAGE_GRAYSCALE
+#define CV_LOAD_IMAGE_GRAYSCALE cv::IMREAD_GRAYSCALE
+#endif
+#ifndef CV_FILLED
+#define CV_FILLED cv::FILLED
+#endif
 #include <cmath>
 
 using namespace std;
@@ -11,7 +17,7 @@ int main() {
 
 	float cx = 3;
 	float cy = 3;
-	Mat original = imread("ghost.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+	Mat original = imread("../tcc-images/lena.jpg", CV_LOAD_IMAGE_GRAYSCALE);
 	Mat escalada(int(original.rows*cy), int(original.cols*cx), CV_8UC1, Scalar(0));
 
 	//------------------------------- ESCALAMIENTO 
@@ -61,5 +67,10 @@ int main() {
 
 	namedWindow("interpolacion", WINDOW_AUTOSIZE);
 	imshow("interpolacion", interp);
+	
+	imwrite("../tcc-outputs/018_original.png", original);
+	imwrite("../tcc-outputs/018_escalado_simples.png", escalada);
+	imwrite("../tcc-outputs/018_interpolacao.png", interp);
+
 	waitKey(0);
 }

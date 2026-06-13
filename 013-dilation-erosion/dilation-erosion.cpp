@@ -2,16 +2,21 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include <iostream>
+#ifndef CV_LOAD_IMAGE_GRAYSCALE
+#define CV_LOAD_IMAGE_GRAYSCALE cv::IMREAD_GRAYSCALE
+#endif
+#ifndef CV_FILLED
+#define CV_FILLED cv::FILLED
+#endif
 #include <cmath>
 #include "opencv2/video.hpp"
-#include<windows.h>
 #include<algorithm>
 #include<vector>
 
 using namespace std;
 using namespace cv;
 
-Mat binary = imread("binary.png", CV_LOAD_IMAGE_GRAYSCALE);
+Mat binary = imread("../tcc-images/sudoku.png", CV_LOAD_IMAGE_GRAYSCALE);
 Mat rErosion(binary.rows, binary.cols, CV_8UC1, Scalar(0));
 Mat rDilatacion(binary.rows, binary.cols, CV_8UC1, Scalar(0));
 
@@ -115,6 +120,10 @@ int main() {
 
 	namedWindow("dilatacion", WINDOW_AUTOSIZE);
 	imshow("dilatacion", rDilatacion);
+
+	imwrite("../tcc-outputs/013_original.png", binary);
+	imwrite("../tcc-outputs/013_erosion.png", rErosion);
+	imwrite("../tcc-outputs/013_dilation.png", rDilatacion);
 
 	waitKey(0);
 }
