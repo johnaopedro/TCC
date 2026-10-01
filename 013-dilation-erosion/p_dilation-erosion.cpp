@@ -26,7 +26,12 @@
 using namespace std;
 using namespace cv;
 
-Mat binary = imread("../tcc-images/sudoku_bin.png", CV_LOAD_IMAGE_GRAYSCALE);
+
+/*
+	WARNING!
+	These ARE NOT absolute paths! Run from 13-...!!!
+*/
+Mat binary = imread("../tcc-images/sudoku_bin.png", CV_LOAD_IMAGE_GRAYSCALE); 
 Mat rErosion(binary.rows, binary.cols, CV_8UC1, Scalar(0));
 Mat rDilatacion(binary.rows, binary.cols, CV_8UC1, Scalar(0));
 
