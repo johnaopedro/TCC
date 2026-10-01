@@ -4,6 +4,9 @@
 */cmake_install.cmake
 */Makefile
 
+#nano temps
+*.swp
+
 #output images (disabled for now!)
 #tcc-outputs/*
 
