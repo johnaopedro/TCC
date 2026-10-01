@@ -2,11 +2,14 @@
 */CMakeFiles/*
 */CMakeCache.txt
 */cmake_install.cmake
-tcc-outputs/*
 */Makefile
 
-#mark outputs with whatever extension, so we ignore them!
+#output images (disabled for now!)
+#tcc-outputs/*
+
+#mark compiled outputs with whatever extension, so we ignore them!
 *.out
+*.o
 
 #vscode
 .vscode/
