@@ -1,0 +1,12 @@
+#cmake
+*/CMakeFiles/*
+*/CMakeCache.txt
+*/cmake_install.cmake
+tcc-outputs/*
+*/Makefile
+
+#mark outputs with whatever extension, so we ignore them!
+*.out
+
+#vscode
+.vscode/
