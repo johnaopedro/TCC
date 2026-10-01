@@ -1,3 +1,4 @@
+//parallel version using omp.h
 #include "opencv2/core/core.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
@@ -12,9 +13,15 @@
 #include "opencv2/video.hpp"
 #include <algorithm>
 #include <vector>
+#include <omp.h>
 
-//#define DEBUG
 //#define INSPECT
+//#define DEBUG
+#ifdef DEBUG
+#define NTHREADS 1
+#else
+#define NTHREADS 4 //Put anything here :>
+#endif
 
 using namespace std;
 using namespace cv;
@@ -74,6 +81,12 @@ bool dilatacion(int r, int c) {
 
 int main() {
 	//---------------------------------------------- EROSION
+	/*
+		Principais atividades são identificação de pontos de alta.
+		Subsequentemente, alteração da matriz.
+	*/
+
+	#pragma omp parallel for num_threads(NTHREADS)
 	for (int i = 0; i < binary.rows; i++) {
 		for (int j = 0; j < binary.cols; j++) {
 			if (!erosion(i, j)) {
@@ -82,17 +95,17 @@ int main() {
 			else {
 				rErosion.at<uchar>(i, j) = 230;
 			}
-
-			//this will very slowly render the results!
 			#ifdef DEBUG
 			namedWindow("Resultado", WINDOW_AUTOSIZE);
-			imshow("Resultado", result);
+			imshow("Resultado", rErosion);
 			waitKey(1);
 			#endif
 		}
 	}
+	
 
 	//---------------------------------------------- DILATACION
+	#pragma omp parallel for num_threads(NTHREADS)
 	for (int i = 0; i < binary.rows; i++) {
 		for (int j = 0; j < binary.cols; j++) {
 			if (dilatacion(i, j)) {
@@ -106,6 +119,8 @@ int main() {
 
 	int dif = 0;
 	int dif2 = 0;
+
+	#pragma omp parallel for num_threads(NTHREADS)
 	for (int i = 0; i < binary.rows; i++) {
 		for (int j = 0; j < binary.cols; j++) {
 			if (binary.at<uchar>(i, j) != rErosion.at<uchar>(i, j)) {
@@ -131,11 +146,11 @@ int main() {
 	imshow("dilatacion", rDilatacion);
 	#endif
 
-	imwrite("../tcc-outputs/013_original.png", binary);
-	imwrite("../tcc-outputs/013_erosion.png", rErosion);
-	imwrite("../tcc-outputs/013_dilation.png", rDilatacion);
-	
-	#ifdef INSPECT
+	imwrite("../tcc-outputs/013_poriginal.png", binary);
+	imwrite("../tcc-outputs/013_perosion.png", rErosion);
+	imwrite("../tcc-outputs/013_pdilation.png", rDilatacion);
+
+	#ifdef INSPECT 
 	waitKey(0);
 	#endif
 }
