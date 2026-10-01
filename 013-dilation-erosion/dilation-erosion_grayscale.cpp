@@ -1,6 +1,9 @@
-#include "opencv2/core/core.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
-#include "opencv2/highgui/highgui.hpp"
+// most of this was NOT written by l0c. Do be sure to check the original work of the author!
+
+#include <opencv5/opencv2/core/core.hpp>
+#include <opencv5/opencv2/imgproc/imgproc.hpp>
+#include <opencv5/opencv2/highgui/highgui.hpp>
+#include <opencv5/opencv2/video.hpp>
 #include <iostream>
 #ifndef CV_LOAD_IMAGE_GRAYSCALE
 #define CV_LOAD_IMAGE_GRAYSCALE cv::IMREAD_GRAYSCALE
@@ -9,15 +12,13 @@
 #define CV_FILLED cv::FILLED
 #endif
 #include <cmath>
-#include "opencv2/video.hpp"
 #include <algorithm>
 #include <vector>
-#include <omp.h>
 
 using namespace std;
 using namespace cv;
 
-Mat binary = imread("../tcc-images/sudoku_bin.png", CV_LOAD_IMAGE_GRAYSCALE);
+Mat binary = imread("../tcc-images/sudoku.png", CV_LOAD_IMAGE_GRAYSCALE);
 Mat rErosion(binary.rows, binary.cols, CV_8UC1, Scalar(0));
 Mat rDilatacion(binary.rows, binary.cols, CV_8UC1, Scalar(0));
 
@@ -45,6 +46,55 @@ bool erosion(int r, int c) {
 		y++;
 	}
 	return true;
+}
+
+int grayscale_erosion(Mat &erodeme, int w, int z){
+	//loop through image
+	std::vector<int> process;
+	for(int i = 0; i < erodeme.rows; i++){
+		for(int j = 0; j < erodeme.cols; j++){
+			process.clear();
+			//loop through kernel
+			for(int k = 0; k < w; k++){
+				for(int l = 0; l < z; l++){
+					if(!( 0 < i + k || i + k < erodeme.rows || 0 < j + l || j + l < erodeme.cols)){
+						continue; //continues this one -> it would access forbidden places!
+					}
+					process.emplace_back(
+						erodeme.at<char>(i+k, j+l) //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fixme;
+					);
+				}
+			}
+
+			char res = *(std::min_element(process.begin(), process.end())); // max -> it -> *it -> int -> clamp it to an int; go crazy!
+			erodeme.at<char>(i, j) = res;
+		}
+	}
+}
+
+int grayscale_dilate(Mat &erodeme, int w, int z){
+	//loop through image
+	std::vector<int> process;
+	for(int i = 0; i < erodeme.rows; i++){
+		for(int j = 0; j < erodeme.cols; j++){
+			process.clear();
+			//loop through kernel
+			for(int k = 0; k < w; k++){
+				for(int l = 0; l < z; l++){
+					if(!( 0 < i + k || i + k < erodeme.rows || 0 < j + l || j + l < erodeme.cols)){
+						continue; //continues this one -> it would access forbidden places!
+					}
+					process.emplace_back(
+						erodeme.at<char>(i+k, j+l) //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fixme;
+					);
+				}
+			}
+
+			char res = *(std::max_element(process.begin(), process.end())); // dilation simply changes that min to this max. fun, eh?
+			erodeme.at<char>(i, j) = res;
+		}
+
+	}
 }
 
 // con que uno de los bracitos del elemento este dentro de la mancha, se pinta ese origen
@@ -111,9 +161,8 @@ int main() {
 		}
 	}
 
-	cout << dif  << endl;
+	cout << dif << endl;
 	cout << dif2 << endl;
-	
 	namedWindow("Original", WINDOW_AUTOSIZE);
 	imshow("Original", binary);
 

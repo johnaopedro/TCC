@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.13)
+project( DisplayImage )
+find_package( OpenCV REQUIRED )
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+add_executable( de_grayscale dilation-erosion_grayscale.cpp )
+add_executable( de dilation-erosion.cpp )
+target_link_libraries( de_grayscale ${OpenCV_LIBS} )
+target_link_libraries( de ${OpenCV_LIBS} )
