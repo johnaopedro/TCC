@@ -19,9 +19,10 @@ using namespace std;
 using namespace cv;
 
 Mat binary = imread("../tcc-images/sudoku.png", CV_LOAD_IMAGE_GRAYSCALE);
-Mat rErosion(binary.rows, binary.cols, CV_8UC1, Scalar(0));
-Mat rDilatacion(binary.rows, binary.cols, CV_8UC1, Scalar(0));
-
+//Mat rErosion(binary.rows, binary.cols, CV_8UC1, Scalar(0));
+Mat rErosion = binary;
+//Mat rDilatacion(binary.rows, binary.cols, CV_8UC1, Scalar(0));
+Mat rDilatacion = binary;
 int mask[3][3] = { {0,1,0},{1,1,1},{0,1,0} };
 int innerMtx = 3;
 
@@ -122,6 +123,8 @@ bool dilatacion(int r, int c) {
 
 int main() {
 	//---------------------------------------------- EROSION
+	
+	/*
 	for (int i = 0; i < binary.rows; i++) {
 		for (int j = 0; j < binary.cols; j++) {
 			if (!erosion(i, j)) {
@@ -135,8 +138,16 @@ int main() {
 			//waitKey(1);
 		}
 	}
+	*/
+
+	grayscale_erosion(rErosion, 3, 3);
+	grayscale_dilate(rDilatacion, 3, 3);
+
+	
 
 	//---------------------------------------------- DILATACION
+	
+	/*
 	for (int i = 0; i < binary.rows; i++) {
 		for (int j = 0; j < binary.cols; j++) {
 			if (dilatacion(i, j)) {
@@ -147,6 +158,7 @@ int main() {
 			}
 		}
 	}
+	*/
 
 	int dif = 0;
 	int dif2 = 0;
