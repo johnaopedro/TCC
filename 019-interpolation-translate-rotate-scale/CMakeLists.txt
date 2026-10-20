@@ -1,0 +1,31 @@
+set(CMAKE_CXX_STANDARD 26)
+cmake_minimum_required(VERSION 3.13)
+project( interp )
+find_package( OpenCV REQUIRED )
+find_package( OpenMP REQUIRED )
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+
+add_executable( interp.out    interpolation.cpp )
+add_executable( translate.out translate.cpp     )
+add_executable( rotate.out    rotate.cpp        )
+add_executable( scale.out     scale.cpp         )
+
+add_executable( pinterp.out    pinterpolation.cpp )
+add_executable( ptranslate.out ptranslate.cpp     )
+add_executable( protate.out    protate.cpp        )
+add_executable( pscale.out     pscale.cpp         )
+
+target_link_libraries( interp.out    ${OpenCV_LIBS}      )
+target_link_libraries( translate.out ${OpenCV_LIBS}      )
+target_link_libraries( rotate.out    ${OpenCV_LIBS}      )
+target_link_libraries( scale.out     ${OpenCV_LIBS}      )
+
+target_link_libraries( pinterp.out    ${OpenCV_LIBS}      )
+target_link_libraries( ptranslate.out ${OpenCV_LIBS}      )
+target_link_libraries( protate.out    ${OpenCV_LIBS}      )
+target_link_libraries( pscale.out     ${OpenCV_LIBS}      )
+target_link_libraries( pinterp.out    OpenMP::OpenMP_CXX )
+target_link_libraries( ptranslate.out OpenMP::OpenMP_CXX )
+target_link_libraries( protate.out    OpenMP::OpenMP_CXX )
+target_link_libraries( pscale.out     OpenMP::OpenMP_CXX )
+
