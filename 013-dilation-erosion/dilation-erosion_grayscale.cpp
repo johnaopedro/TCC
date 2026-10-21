@@ -15,41 +15,13 @@
 #include <algorithm>
 #include <vector>
 
+//#define DEBUG
+
 using namespace std;
 using namespace cv;
 
-Mat binary = imread("../tcc-images/sudoku.png", CV_LOAD_IMAGE_GRAYSCALE);
-//Mat rErosion(binary.rows, binary.cols, CV_8UC1, Scalar(0));
-Mat rErosion = binary;
-//Mat rDilatacion(binary.rows, binary.cols, CV_8UC1, Scalar(0));
-Mat rDilatacion = binary;
-int mask[3][3] = { {0,1,0},{1,1,1},{0,1,0} };
-int innerMtx = 3;
-
 // con que uno de los bracitos del elemento este fuera de la mancha, ya no se pinta el origen
-bool erosion(int r, int c) {
-	int y = 0;
-	for (int i = r - int(innerMtx / 2); i <= r + int(innerMtx / 2); i++) {
-		int x = 0;
-		for (int j = c - int(innerMtx / 2); j <= c + int(innerMtx / 2); j++) {
-			if (i < 0 or i >= binary.rows or j < 0 or j >= binary.cols) {
-				continue;
-			}
-			else {
-				if (mask[y][x] == 1) {
-					if (binary.at<uchar>(i, j) == 0) {
-						return false;
-					}
-				}
-			}
-			x++;
-		}
-		y++;
-	}
-	return true;
-}
-
-int grayscale_erosion(Mat &erodeme, int w, int z){
+void grayscale_erosion(Mat &erodeme, int w, int z){
 	//loop through image
 	std::vector<int> process;
 	for(int i = 0; i < erodeme.rows; i++){
@@ -67,61 +39,47 @@ int grayscale_erosion(Mat &erodeme, int w, int z){
 				}
 			}
 
-			char res = *(std::min_element(process.begin(), process.end())); // max -> it -> *it -> int -> clamp it to an int; go crazy!
+			char res = *(std::min_element(process.begin(), process.end())); // min -> it -> *it -> int -> clamp it to an int; go crazy!
 			erodeme.at<char>(i, j) = res;
 		}
 	}
 }
 
-int grayscale_dilate(Mat &erodeme, int w, int z){
+// con que uno de los bracitos del elemento este dentro de la mancha, se pinta ese origen
+void grayscale_dilate(Mat &dilateme, int w, int z){
 	//loop through image
 	std::vector<int> process;
-	for(int i = 0; i < erodeme.rows; i++){
-		for(int j = 0; j < erodeme.cols; j++){
+	for(int i = 0; i < dilateme.rows; i++){
+		for(int j = 0; j < dilateme.cols; j++){
 			process.clear();
 			//loop through kernel
 			for(int k = 0; k < w; k++){
 				for(int l = 0; l < z; l++){
-					if(!( 0 < i + k || i + k < erodeme.rows || 0 < j + l || j + l < erodeme.cols)){
+					if(!( 0 < i + k || i + k < dilateme.rows || 0 < j + l || j + l < dilateme.cols)){
 						continue; //continues this one -> it would access forbidden places!
 					}
 					process.emplace_back(
-						erodeme.at<char>(i+k, j+l) //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fixme;
+						dilateme.at<char>(i+k, j+l) 
 					);
 				}
 			}
 
 			char res = *(std::max_element(process.begin(), process.end())); // dilation simply changes that min to this max. fun, eh?
-			erodeme.at<char>(i, j) = res;
+			dilateme.at<char>(i, j) = res;
 		}
 
 	}
-}
-
-// con que uno de los bracitos del elemento este dentro de la mancha, se pinta ese origen
-bool dilatacion(int r, int c) {
-	int y = 0;
-	for (int i = r - int(innerMtx / 2); i <= r + int(innerMtx / 2); i++) {
-		int x = 0;
-		for (int j = c - int(innerMtx / 2); j <= c + int(innerMtx / 2); j++) {
-			if (i < 0 or i >= binary.rows or j < 0 or j >= binary.cols) {
-				continue;
-			}
-			else {
-				if (mask[y][x] == 1) {
-					if (binary.at<uchar>(i, j) == 255) {
-						return true;
-					}
-				}
-			}
-			x++;
-		}
-		y++;
-	}
-	return false;
 }
 
 int main() {
+
+	Mat binary = imread("../tcc-images/sudoku.png", IMREAD_GRAYSCALE);
+	//Mat rErosion(binary.rows, binary.cols, CV_8UC1, Scalar(0));
+	Mat rErosion = binary.clone();
+	//Mat rDilatacion(binary.rows, binary.cols, CV_8UC1, Scalar(0));
+	Mat rDilatacion = binary.clone();
+	int mask[3][3] = { {0,1,0},{1,1,1},{0,1,0} };
+	int innerMtx = 3;
 	//---------------------------------------------- EROSION
 	
 	/*
@@ -173,8 +131,10 @@ int main() {
 		}
 	}
 
-	cout << dif << endl;
+	cout << dif  << endl;
 	cout << dif2 << endl;
+	
+	#ifdef DEBUG
 	namedWindow("Original", WINDOW_AUTOSIZE);
 	imshow("Original", binary);
 
@@ -183,10 +143,11 @@ int main() {
 
 	namedWindow("dilatacion", WINDOW_AUTOSIZE);
 	imshow("dilatacion", rDilatacion);
-
-	imwrite("../tcc-outputs/013_original.png", binary);
-	imwrite("../tcc-outputs/013_erosion.png", rErosion);
-	imwrite("../tcc-outputs/013_dilation.png", rDilatacion);
-
 	waitKey(0);
+	#endif
+
+	imwrite("../tcc-outputs/013_goriginal.png", binary     );
+	imwrite("../tcc-outputs/013_gerosion.png" , rErosion   );
+	imwrite("../tcc-outputs/013_gdilation.png", rDilatacion);
+
 }
