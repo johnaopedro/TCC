@@ -13,7 +13,7 @@ using namespace cv;
 int main() {
 
 	Mat original = imread("../tcc-images/sudoku.png", IMREAD_GRAYSCALE);
-	const int tc = 8; //omp_get_num_threads();	
+	const int tc = 4; //omp_get_num_threads();	
 
 	//------------------------------- ESCALAMIENTO CON INTERPOLACION PARA NO PIXELEAR
 	
@@ -23,6 +23,11 @@ int main() {
 	
 	Mat interp( int(original.rows*iy), int(original.cols*ix), CV_8UC1, Scalar(0));
 
+
+	/*
+		As any one thread will possess a unique p = (i,j) ordered pair,
+		we don't incur into a race condition. Great Stuff!
+	*/
 	#pragma omp parallel for num_threads(tc/2)
 	for (int i = 0; i < interp.rows; i++) {
 		#pragma omp parallel for num_threads(tc/2)
