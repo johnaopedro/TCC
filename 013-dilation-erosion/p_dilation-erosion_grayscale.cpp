@@ -152,8 +152,8 @@ int main() {
 	imshow("dilatacion", rDilatacion);
 	waitKey(0);
 	#endif
-	imwrite("../tcc-outputs/013_goriginal.png", binary     );
-	imwrite("../tcc-outputs/013_gerosion.png" , rErosion   );
-	imwrite("../tcc-outputs/013_gdilation.png", rDilatacion);
+	imwrite("../tcc-outputs/013_pgoriginal.png", binary     );
+	imwrite("../tcc-outputs/013_pgerosion.png" , rErosion   );
+	imwrite("../tcc-outputs/013_pgdilation.png", rDilatacion);
 
 }

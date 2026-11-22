@@ -8,7 +8,7 @@
 #include <omp.h>
 using namespace cv;
 
-//#define DEBUG
+#define DEBUG
 constexpr double pi = std::numbers::pi_v<double>; 
 
 int main() {
@@ -18,10 +18,12 @@ int main() {
 	constexpr int l1 = tc-2;
 	constexpr int l2 = 2;
 	std::cout << tc << std::endl;
-
-	//Mat original = imread("../tcc-images/sudoku.png", IMREAD_GRAYSCALE);
-	Mat original = imread("../tcc-images/sudoku_bin_4000_4036.png", IMREAD_GRAYSCALE);
 	
+	#ifdef DEBUG
+	Mat original = imread("../tcc-images/sudoku.png", IMREAD_GRAYSCALE);
+	#else
+	Mat original = imread("../tcc-images/sudoku_bin_4000_4036.png", IMREAD_GRAYSCALE);
+	#endif
 	//-------------------------------- ROTACION
 	int angulo = 45;
 	double rads = (45 * pi) / 180.0f;

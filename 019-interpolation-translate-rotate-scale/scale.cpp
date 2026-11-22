@@ -1,4 +1,4 @@
-
+// nearest neighbour scaling
 #include <opencv5/opencv2/core.hpp>
 #include <opencv5/opencv2/imgproc.hpp>
 #include <opencv5/opencv2/highgui.hpp>

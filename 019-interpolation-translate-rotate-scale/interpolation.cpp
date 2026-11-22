@@ -10,8 +10,11 @@ using namespace cv;
 //#define DEBUG
 
 int main() {
-
+	#ifdef DEBUG
 	Mat original = imread("../tcc-images/sudoku.png", IMREAD_GRAYSCALE);
+	#else
+	Mat original = imread("../tcc-images/sudoku_bin_4000_4036.png", IMREAD_GRAYSCALE);
+	#endif
 	
 	//------------------------------- ESCALAMIENTO CON INTERPOLACION PARA NO PIXELEAR
 	

@@ -11,9 +11,12 @@ using namespace cv;
 //#define DEBUG
 
 int main() {
-
+	#ifdef DEBUG
 	Mat original = imread("../tcc-images/sudoku.png", IMREAD_GRAYSCALE);
-	const int tc = 4; //omp_get_num_threads();	
+	#else
+	Mat original = imread("../tcc-images/sudoku_bin_4000_4036.png", IMREAD_GRAYSCALE);
+	#endif
+	const int tc = 8; //omp_get_num_threads();	
 
 	//------------------------------- ESCALAMIENTO CON INTERPOLACION PARA NO PIXELEAR
 	
@@ -28,9 +31,12 @@ int main() {
 		As any one thread will possess a unique p = (i,j) ordered pair,
 		we don't incur into a race condition. Great Stuff!
 	*/
-	#pragma omp parallel for num_threads(tc/2)
+	
+	#pragma omp parallel for num_threads(tc) \
+		schedule(dynamic)
+	//#pragma omp parallel for num_threads(tc/2)
 	for (int i = 0; i < interp.rows; i++) {
-		#pragma omp parallel for num_threads(tc/2)
+		//#pragma omp parallel for num_threads(tc/2)
 		for (int j = 0; j < interp.cols; j++) {
 			int q11 = 0, q22 = 0, q21 = 0;
 			float px = (j / ix);
