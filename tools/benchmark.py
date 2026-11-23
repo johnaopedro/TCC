@@ -175,9 +175,10 @@ def main():
                     dimensions=DIMENSIONS, flags=FLAGS, affinity_cpus=cpus,
                     omp={key: env[key] for key in env if key.startswith("OMP_")},
                     primary_comparison="sequencial adaptado versus versão paralelizada; ganho total",
-                    compiler=run(["g++", "--version"]), cpu=run(["lscpu"]),
+                    compiler=run(["g++", "--version"]), cpu=run(["lscpu"], env=env),
                     opencv=run(["pkg-config", "--modversion", "opencv4"]).strip(),
-                    kernel=run(["uname", "-a"]).strip(),
+                    kernel=run(["uname", "-a"]).strip(), os_release=read_optional("/etc/os-release"),
+                    governor=read_optional("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor"),
                     load_start=read_optional("/proc/loadavg"), memory_start=read_optional("/proc/meminfo"),
                     perf_event_paranoid=read_optional("/proc/sys/kernel/perf_event_paranoid"),
                     sources={}, inputs={}, binaries={})
