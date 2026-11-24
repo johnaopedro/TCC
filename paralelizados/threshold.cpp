@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
         const cv::Mat image = tcc_alterada::load_gray(argv[1]);
         const std::string outdir = argc == 3 ? argv[2] : "";
         std::array<cv::Mat, 5> output;
-        for (auto& matrix : output) matrix.create(image.size(), CV_8UC1);
+        for (auto& matrix : output) matrix = cv::Mat(image.size(), CV_8UC1, cv::Scalar(0));
 
         const double start = tcc_alterada::now_seconds();
         threshold_algorithm::process(image, output);

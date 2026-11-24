@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
         tcc_alterada::configure_opencv();
         const cv::Mat image = tcc_alterada::load_gray(argv[1]);
         const std::string outdir = argc == 3 ? argv[2] : "";
-        cv::Mat output(image.size(), CV_8UC1);
+        cv::Mat output(image.size(), CV_8UC1, cv::Scalar(0));
 
         const double start = tcc_alterada::now_seconds();
         equalization_algorithm::process(image, output);

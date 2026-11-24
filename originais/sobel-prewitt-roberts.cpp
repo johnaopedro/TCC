@@ -17,9 +17,9 @@ int main(int argc, char** argv)
 	Mat image = load_gray(filenameD);
 
 	// Todas as matrizes sao alocadas fora da regiao cronometrada.
-	Mat sobelH(image.rows, image.cols, CV_32FC1);
-	Mat sobelV(image.rows, image.cols, CV_32FC1);
-	Mat raiz(image.rows, image.cols, CV_32FC1);
+	Mat sobelH(image.rows, image.cols, CV_32FC1, Scalar(0));
+	Mat sobelV(image.rows, image.cols, CV_32FC1, Scalar(0));
+	Mat raiz(image.rows, image.cols, CV_32FC1, Scalar(0));
 	Mat sobelHR(image.rows, image.cols, CV_8UC1, Scalar(0));
 	Mat sobelVR(image.rows, image.cols, CV_8UC1, Scalar(0));
 	Mat raizR(image.rows, image.cols, CV_8UC1, Scalar(0));
