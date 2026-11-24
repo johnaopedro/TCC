@@ -157,8 +157,17 @@ def environment_table(env, tdir):
     kernel = f"Linux {kernel[2]}" if len(kernel) > 2 else None
     checks = env.get("affinity_checks", [])
     distinct = all(not c.get("uses_smt_siblings") for c in checks) if checks else None
+    kinds = None
+    if env.get("cpu_atom_cpus"):
+        kinds = f"desempenho: CPUs {env.get('cpu_core_cpus')}; eficiência: CPUs {env['cpu_atom_cpus']}"
+    elif env.get("cpu_max_khz"):
+        counts = defaultdict(int)
+        for khz in env["cpu_max_khz"].values():
+            counts[khz] += 1
+        kinds = "; ".join(f"{n} CPUs até {khz // 1000} MHz" for khz, n in sorted(counts.items(), reverse=True))
     rows = [
         ("Processador", field(cpu, "Model name", "Nome do modelo")),
+        ("Tipos de núcleo", kinds),
         ("Núcleos", f"{topo.get('physical_cores_available', '--')} físicos, "
                     f"{topo.get('logical_cpus_available', '--')} lógicos; SMT {smt}" if topo else None),
         ("Memória RAM", mem),
@@ -170,8 +179,9 @@ def environment_table(env, tdir):
         ("Controle de paralelismo", ", ".join(f"{k}={omp[k]}" for k in ("OMP_DYNAMIC", "OMP_PROC_BIND",
                                      "OMP_WAIT_POLICY") if k in omp) or None),
         ("Afinidade de threads", None if distinct is None else
-         "taskset; uma thread por núcleo físico em todos os graus medidos" if distinct else
-         "taskset; núcleos físicos primeiro, depois threads SMT"),
+         ("taskset; uma thread por núcleo físico em todos os graus medidos" if distinct else
+          "taskset; núcleos físicos primeiro, depois threads SMT")
+         + (f"; CPUs {env['requested_cpus']}" if env.get("requested_cpus") else "")),
         ("Governador de frequência", env.get("governor")),
     ]
     body = [[name, esc(value.replace("instances", "instâncias").replace("instance", "instância"))
@@ -300,8 +310,8 @@ def charts(d, out):
         i = list(GROUPS).index(g) if g in GROUPS else len(GROUPS) - 1
         return GROUP_COLORS[i % len(GROUP_COLORS)], GROUP_MARKERS[i % len(GROUP_MARKERS)]
 
-    def ideal(ax):
-        ax.plot(THREADS, THREADS, linestyle="--", color=MUTED, linewidth=1, label="Ideal ($S=p$)")
+    def ideal(ax, label="Ideal ($S=p$)"):
+        ax.plot(THREADS, THREADS, linestyle="--", color=MUTED, linewidth=1, label=label)
 
     def finish(fig, ax, name, ylabel, xlabel="Número de threads ($p$)"):
         ax.set_xlabel(xlabel)
@@ -337,7 +347,7 @@ def charts(d, out):
     #T_1/T_p em 4K, todos os grupos
     if "uhd4k" in d.resolutions:
         fig, ax = plt.subplots(figsize=(6.3, 3.4))
-        ideal(ax)
+        ideal(ax, "Ideal ($T_1/T_p=p$)")
         for g in d.groups:
             c, m = color(g)
             ax.plot(THREADS, [d.internal(g, "uhd4k", p) for p in THREADS], color=c, marker=m,

@@ -60,6 +60,28 @@ def read_optional(path):
         return None
 
 
+def cpu_kinds(cpus):
+    max_khz = {}
+    for cpu in cpus:
+        value = read_optional(f"/sys/devices/system/cpu/cpu{cpu}/cpufreq/cpuinfo_max_freq")
+        if value and value.isdigit():
+            max_khz[str(cpu)] = int(value)
+    return dict(cpu_max_khz=max_khz,
+                cpu_core_cpus=read_optional("/sys/devices/cpu_core/cpus"),
+                cpu_atom_cpus=read_optional("/sys/devices/cpu_atom/cpus"))
+
+
+def cpu_range(text):
+    result = set()
+    for part in (text or "").split(","):
+        if "-" in part:
+            first, last = part.split("-")
+            result.update(range(int(first), int(last) + 1))
+        elif part.strip():
+            result.add(int(part))
+    return result
+
+
 def topology():
     groups = defaultdict(list)
     details = []
@@ -137,7 +159,21 @@ def main():
                         help="padrão local-ht permite SMT; official exige HT inativo e 8 núcleos; "
                              "local mede apenas p <= núcleos; verify não mede")
     parser.add_argument("--threads", nargs="+", type=int, default=list(THREADS))
+    parser.add_argument("--cpus", help="restringe a coleta a estas CPUs lógicas, ex.: 4-11 "
+                                       "(núcleos de um só tipo em processador híbrido)")
     args = parser.parse_args()
+    if args.cpus:
+        try:
+            chosen = cpu_range(args.cpus)
+        except ValueError:
+            print("ERRO: --cpus deve ser uma lista como 4-11 ou 0,2,4", file=sys.stderr)
+            return 2
+        unavailable = sorted(chosen - os.sched_getaffinity(0))
+        if not chosen or unavailable:
+            print(f"ERRO: CPUs indisponíveis neste sistema: {unavailable or args.cpus}", file=sys.stderr)
+            return 2
+        # Restringe o próprio processo: compilação, validação e medições herdam o conjunto.
+        os.sched_setaffinity(0, chosen)
     hardware = topology()
     try:
         timing_threads, skipped = select_threads(args.mode, args.threads, hardware)
@@ -168,6 +204,7 @@ def main():
     env.update(OMP_DYNAMIC="false", OMP_PLACES=",".join("{" + str(c) + "}" for c in cpus),
                OMP_PROC_BIND="close", OMP_WAIT_POLICY="PASSIVE", LC_ALL="C")
     metadata = dict(status="INCOMPLETE", start=now(), mode=args.mode, topology=hardware, timing_threads=timing_threads,
+                    requested_cpus=args.cpus,
                     requested_timing_threads=args.threads, skipped_timing_threads=skipped,
                     placement_policy="physical cores first, then SMT siblings" if args.mode == "local-ht" else
                                      "one logical CPU per distinct physical core",
@@ -181,7 +218,23 @@ def main():
                     governor=read_optional("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor"),
                     load_start=read_optional("/proc/loadavg"), memory_start=read_optional("/proc/meminfo"),
                     perf_event_paranoid=read_optional("/proc/sys/kernel/perf_event_paranoid"),
+                    cpu_list=run(["lscpu", "-e=CPU,CORE,MAXMHZ"], env=env), **cpu_kinds(cpus),
                     sources={}, inputs={}, binaries={})
+    # Avisos sem bloqueio: o registro fica no environment.json e a decisão é de quem roda.
+    efficiency = sorted(cpu_range(metadata["cpu_atom_cpus"]) & set(cpus))
+    performance = sorted(cpu_range(metadata["cpu_core_cpus"]) & set(cpus))
+    if efficiency and performance:
+        print(f"AVISO: processador híbrido; as CPUs {efficiency} são núcleos de eficiência e entram "
+              "nos graus de paralelismo maiores. Para usar um só tipo, informe --cpus", flush=True)
+    elif efficiency or performance:
+        kind = "eficiência" if efficiency else "desempenho"
+        print(f"Processador híbrido: todas as CPUs usadas são núcleos de {kind}", flush=True)
+    elif len(set(metadata["cpu_max_khz"].values())) > 1:
+        print("AVISO: as CPUs usadas têm frequências máximas diferentes; "
+              "os graus de paralelismo maiores podem incluir núcleos mais lentos", flush=True)
+    if metadata["governor"] and metadata["governor"] != "performance":
+        print(f"AVISO: governador de frequência '{metadata['governor']}'; "
+              "para a coleta oficial, prefira 'performance'", flush=True)
     workspace = tempfile.TemporaryDirectory(prefix="tcc-benchmark-")
     work_dir = Path(workspace.name)
     bin_dir, logs = work_dir / "bin", work_dir / "logs"
