@@ -1,0 +1,350 @@
+{
+  "status": "COMPLETE_OFFICIAL",
+  "start": "2026-11-25T16:41:15.416929-03:00",
+  "mode": "official",
+  "topology": {
+    "allowed": [
+      {
+        "cpu": 4,
+        "socket": 0,
+        "core": 16,
+        "siblings": "4"
+      },
+      {
+        "cpu": 5,
+        "socket": 0,
+        "core": 17,
+        "siblings": "5"
+      },
+      {
+        "cpu": 6,
+        "socket": 0,
+        "core": 18,
+        "siblings": "6"
+      },
+      {
+        "cpu": 7,
+        "socket": 0,
+        "core": 19,
+        "siblings": "7"
+      },
+      {
+        "cpu": 8,
+        "socket": 0,
+        "core": 20,
+        "siblings": "8"
+      },
+      {
+        "cpu": 9,
+        "socket": 0,
+        "core": 21,
+        "siblings": "9"
+      },
+      {
+        "cpu": 10,
+        "socket": 0,
+        "core": 22,
+        "siblings": "10"
+      },
+      {
+        "cpu": 11,
+        "socket": 0,
+        "core": 23,
+        "siblings": "11"
+      }
+    ],
+    "physical_cores_available": 8,
+    "representatives": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "logical_cpus_available": 8,
+    "logical_cpu_order": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "smt_active": "0",
+    "smt_control": "notsupported"
+  },
+  "timing_threads": [
+    1,
+    2,
+    4,
+    6,
+    8
+  ],
+  "requested_cpus": "4-11",
+  "requested_timing_threads": [
+    1,
+    2,
+    4,
+    6,
+    8
+  ],
+  "skipped_timing_threads": [],
+  "placement_policy": "one logical CPU per distinct physical core",
+  "correctness_threads": [
+    1,
+    2,
+    4,
+    6,
+    8
+  ],
+  "warmup": 1,
+  "repetitions": 3,
+  "random_seed": 20261008,
+  "dimensions": {
+    "base": [
+      500,
+      500
+    ],
+    "media": [
+      1024,
+      1024
+    ],
+    "alta": [
+      2048,
+      2048
+    ],
+    "uhd4k": [
+      3840,
+      2160
+    ],
+    "uhd8k": [
+      7680,
+      4320
+    ]
+  },
+  "flags": [
+    "-O3",
+    "-std=c++17",
+    "-ffp-contract=off",
+    "-Wno-unknown-pragmas"
+  ],
+  "affinity_cpus": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "omp": {
+    "OMP_DYNAMIC": "false",
+    "OMP_PLACES": "{4},{5},{6},{7},{8},{9},{10},{11}",
+    "OMP_PROC_BIND": "close",
+    "OMP_WAIT_POLICY": "PASSIVE"
+  },
+  "primary_comparison": "sequencial adaptado versus versão paralelizada; ganho total",
+  "compiler": "g++ (Ubuntu 15.2.0-16ubuntu1) 15.2.0\nCopyright (C) 2025 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "cpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           39 bits physical, 48 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  12\nOn-line CPU(s) list:                     0-11\nVendor ID:                               GenuineIntel\nModel name:                              12th Gen Intel(R) Core(TM) i5-12500H\nCPU family:                              6\nModel:                                   154\nThread(s) per core:                      1\nCore(s) per socket:                      12\nSocket(s):                               1\nStepping:                                3\nCPU(s) scaling MHz:                      32%\nCPU max MHz:                             4500.0000\nCPU min MHz:                             400.0000\nBogoMIPS:                                6220.80\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb ssbd ibrs ibpb stibp ibrs_enhanced tpr_shadow flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb intel_pt sha_ni xsaveopt xsavec xgetbv1 xsaves split_lock_detect user_shstk avx_vnni dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp hwp_pkg_req hfi vnmi umip pku ospke waitpkg gfni vaes vpclmulqdq rdpid movdiri movdir64b fsrm md_clear serialize arch_lbr ibt flush_l1d arch_capabilities\nVirtualization:                          VT-x\nL1d cache:                               448 KiB (12 instances)\nL1i cache:                               640 KiB (12 instances)\nL2 cache:                                9 MiB (6 instances)\nL3 cache:                                18 MiB (1 instance)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-11\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Mitigation; Clear Register File\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Not affected\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Enhanced / Automatic IBRS; IBPB conditional; PBRSB-eIBRS SW sequence; BHI BHI_DIS_S\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Not affected\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Mitigation; IBPB before exit to userspace\n",
+  "opencv": "4.10.0",
+  "kernel": "Linux clancy 7.0.0-27-generic #27-Ubuntu SMP PREEMPT_DYNAMIC Thu Jun 18 19:13:49 UTC 2026 x86_64 GNU/Linux",
+  "os_release": "PRETTY_NAME=\"Ubuntu 26.04 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"26.04\"\nVERSION=\"26.04 LTS (Resolute Raccoon)\"\nVERSION_CODENAME=resolute\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=resolute\nLOGO=ubuntu-logo",
+  "governor": "performance",
+  "load_start": "0.15 0.18 0.14 1/605 6827",
+  "memory_start": "MemTotal:        7278960 kB\nMemFree:         4448888 kB\nMemAvailable:    5535620 kB\nBuffers:           67804 kB\nCached:          1330352 kB\nSwapCached:            0 kB\nActive:          1297300 kB\nInactive:         403656 kB\nActive(anon):     420152 kB\nInactive(anon):        0 kB\nActive(file):     877148 kB\nInactive(file):   403656 kB\nUnevictable:       91832 kB\nMlocked:               0 kB\nSwapTotal:      16777212 kB\nSwapFree:       16777212 kB\nZswap:                 0 kB\nZswapped:              0 kB\nDirty:                 8 kB\nWriteback:             0 kB\nAnonPages:        395256 kB\nMapped:           457128 kB\nShmem:            117264 kB\nKReclaimable:      63652 kB\nSlab:             272164 kB\nSReclaimable:      63652 kB\nSUnreclaim:       208512 kB\nKernelStack:        9812 kB\nPageTables:        17908 kB\nSecPageTables:      3412 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nWritebackTmp:          0 kB\nCommitLimit:    20416692 kB\nCommitted_AS:    3665640 kB\nVmallocTotal:   34359738367 kB\nVmallocUsed:      118364 kB\nVmallocChunk:          0 kB\nPercpu:            13056 kB\nHardwareCorrupted:     0 kB\nAnonHugePages:         0 kB\nShmemHugePages:    86016 kB\nShmemPmdMapped:        0 kB\nFileHugePages:         0 kB\nFilePmdMapped:         0 kB\nCmaTotal:              0 kB\nCmaFree:               0 kB\nUnaccepted:            0 kB\nBalloon:               0 kB\nHugePages_Total:       0\nHugePages_Free:        0\nHugePages_Rsvd:        0\nHugePages_Surp:        0\nHugepagesize:       2048 kB\nHugetlb:               0 kB\nDirectMap4k:      572540 kB\nDirectMap2M:     4347904 kB\nDirectMap1G:     4194304 kB",
+  "perf_event_paranoid": "4",
+  "cpu_list": "CPU CORE    MAXMHZ\n  0    0 4500.0000\n  1    1 4500.0000\n  2    2 4500.0000\n  3    3 4500.0000\n  4    4 3300.0000\n  5    5 3300.0000\n  6    6 3300.0000\n  7    7 3300.0000\n  8    8 3300.0000\n  9    9 3300.0000\n 10   10 3300.0000\n 11   11 3300.0000\n",
+  "cpu_max_khz": {
+    "4": 3300000,
+    "5": 3300000,
+    "6": 3300000,
+    "7": 3300000,
+    "8": 3300000,
+    "9": 3300000,
+    "10": 3300000,
+    "11": 3300000
+  },
+  "cpu_core_cpus": "0-3",
+  "cpu_atom_cpus": "4-11",
+  "sources": {
+    "paralelizados/threshold.cpp": "9e298fdaf860428c7a897347815b971b39ba1971d11f0faa43acbd4e7d350bee",
+    "paralelizados/equalization.cpp": "870ad9c60589ae6b995cfc6bb79975b7864a1428f05e81a1314551f322f40f63",
+    "paralelizados/sobel-prewitt-roberts.cpp": "d41610d3f236334db32a2b972c21995a5a135df8cf7fb7a3937aeda2cdd215ce",
+    "originais/threshold.cpp": "83dbef77c708c1c4305d6ef6eccdba41e0c8911627e8c24598cce455b6d8f448",
+    "originais/equalization.cpp": "046357436859c380866c12590bcc805919123e115ba8a0f1ea2cc8c2b5f7ac86",
+    "originais/sobel-prewitt-roberts.cpp": "f016481bde72314c3b1f49d517f8bc2b7f0a92e9dbfcd6bf0a0c6f7f5e5482ad",
+    "paralelizados/common/bench.hpp": "b4c98f19f8a636cbe82fe3cee09d82da4e7b8b06583b193ba67ba049684f89df",
+    "originais/common/bench.hpp": "1f37b11e58d905d5141d9dc10b389c6755ebee21945850e6b780224370d303ba",
+    "scripts/benchmark.sh": "6cebaffe67a20e949df45b5af44d89b4bb588a75fb2f435f80fe8b9bc3b4da4d",
+    "tools/prepare_images.cpp": "3adeb74c6f10ec3794c8b17cff0d60f0984a9d2ce812e27232f0543a4408af0e",
+    "testes/verificar_entradas.cpp": "4b907b99d5fd0d3873149185ab78829ef96cee54f3d90a5d2d69ea700edb1279",
+    "tools/afinidade.cpp": "0a1c65376e00d44ae846a37208fe09fd15246b98bf91d5e2e56dd2502d55d605",
+    "tools/benchmark.py": "f1382ea1aa937d6e4379299f69bf1037cbe0d5913c9bac3cd5dfa87f534e7d20",
+    "testes/verify.cpp": "02627b489b97e27e7dfb8f5e5b857de374152d496074b3120d81f99e46e42f6c",
+    "testes/reference.hpp": "3339a0fe212d4035da87b1e7a0442a8bcb390d79742fd1858dd614127269378e",
+    "testes/referencias.inc": "e36bc74fd43e0f1eee0fc539206caa41f1d3677deb881db0b540ce311ea857ba"
+  },
+  "inputs": {
+    "tcc-images/lena.jpg": "7de7ed51a1594fff247f4cae2301eceacf5313d6011e37b4a4c8733f7bb72c07",
+    "inputs/lena/base.png": "7c3f9b31b9f6d21c3a297d002fa07052e3f642b6f5299a50de20d96762257cad",
+    "inputs/lena/media.png": "212f08fc29a2f5eea7ef3e82f100c77cd84e8233a25ce04a6c44166461710a99",
+    "inputs/lena/alta.png": "7dc861d5c0a32082a627b065aa65883411ecc0470cbacab5d43630607cb94b38",
+    "inputs/lena/uhd4k.png": "287c590335be0d83ecf9579a996f8749509c3d7afc0532d4ac4a35b2f99fdd06",
+    "inputs/lena/uhd8k.png": "96f1ffa4f4a89fd13f3447e837cd759e7027daec5aece78b0980d1e24442f4e6",
+    "tcc-images/sudoku.png": "3cd9ab173f7178c0a16bba9f867062b58b5d60918d5aeb8ced85cba0b24c353a",
+    "inputs/sudoku/base.png": "389d90cf716f703ef70b8a1c253eceea1c44f14b5c18022bc0a11fd6c2f1fa82",
+    "inputs/sudoku/media.png": "51fad2bce324b128fd205e94677fe3069013b0b67b29d4f90af86c5748e2c487",
+    "inputs/sudoku/alta.png": "f0c3be3a45a96ac254272cb7fb8129d6af1bfc6664c2cc9ae34235bd2230a255",
+    "inputs/sudoku/uhd4k.png": "a1628a9d6bd8d5509b8c00b92fa0bde7f960c75bbb3e648cae5ba46a398c1228",
+    "inputs/sudoku/uhd8k.png": "2bf7d2d3273853abadc4fb601db3fbdef2a4893ab4edfa5f03086cf3b73798e1",
+    "tcc-images/building.jpg": "742a1baad62ac82e91e718e77eedf7e85c2eddc4badfb8c87c6cbc86c45a8b07",
+    "inputs/building/base.png": "2043b93879fc56861620c9bdcb3965f7335aeb1240ddb6683d9473142ad5010e",
+    "inputs/building/media.png": "d313996c84ccf44bdfb96d35fde5ae79e251284281edcf0fc5ade330921dfbca",
+    "inputs/building/alta.png": "8311d041ea4123660d8807e6b150bc92c6bf9be4d46431107a0913ea97031a8e",
+    "inputs/building/uhd4k.png": "c49e40f6b03bb58921e07371c898a25f947349fb16f54c125c02a5cd11b53c40",
+    "inputs/building/uhd8k.png": "93e9c26a76130a4d64c1ff247abf5d4d520065af40b8090aa13536238c507d68"
+  },
+  "binaries": {
+    "sequencial__threshold": "b4b4c4e0bb080e2366150a3661794446d9e1c82239e79f7313eded7cbd9d8b11",
+    "paralelizada__threshold": "c4af4dce98a983602a7014a88d4c7e3ae1bc5e0f73447460e05905895d3f9535",
+    "sequencial__equalization": "f8d92ebc7270464aededd2f5783bafb5bb54fd46d5b5897904bae0201411d978",
+    "paralelizada__equalization": "50a897ec63b06fab70539f4286eddb625c8e18e9a49539cc0e1b63049153ee74",
+    "sequencial__sobel-prewitt-roberts": "09d822e0d669fcb8dd376386d84e6de30a75daafd1d08f62a34a371e76897fb5",
+    "paralelizada__sobel-prewitt-roberts": "1a208333e6fddcf020bcc8835201cc084085d2567c969d403a6b3f40a14b86c9"
+  },
+  "opencv_build_flags": [
+    "-I/usr/include/opencv4",
+    "-lopencv_stitching",
+    "-lopencv_alphamat",
+    "-lopencv_aruco",
+    "-lopencv_bgsegm",
+    "-lopencv_bioinspired",
+    "-lopencv_ccalib",
+    "-lopencv_cvv",
+    "-lopencv_dnn_objdetect",
+    "-lopencv_dnn_superres",
+    "-lopencv_dpm",
+    "-lopencv_face",
+    "-lopencv_freetype",
+    "-lopencv_fuzzy",
+    "-lopencv_hdf",
+    "-lopencv_hfs",
+    "-lopencv_img_hash",
+    "-lopencv_intensity_transform",
+    "-lopencv_line_descriptor",
+    "-lopencv_mcc",
+    "-lopencv_quality",
+    "-lopencv_rapid",
+    "-lopencv_reg",
+    "-lopencv_rgbd",
+    "-lopencv_saliency",
+    "-lopencv_shape",
+    "-lopencv_signal",
+    "-lopencv_stereo",
+    "-lopencv_structured_light",
+    "-lopencv_phase_unwrapping",
+    "-lopencv_superres",
+    "-lopencv_optflow",
+    "-lopencv_surface_matching",
+    "-lopencv_tracking",
+    "-lopencv_highgui",
+    "-lopencv_datasets",
+    "-lopencv_text",
+    "-lopencv_plot",
+    "-lopencv_ml",
+    "-lopencv_videostab",
+    "-lopencv_videoio",
+    "-lopencv_viz",
+    "-lopencv_wechat_qrcode",
+    "-lopencv_ximgproc",
+    "-lopencv_video",
+    "-lopencv_xobjdetect",
+    "-lopencv_objdetect",
+    "-lopencv_calib3d",
+    "-lopencv_imgcodecs",
+    "-lopencv_features2d",
+    "-lopencv_dnn",
+    "-lopencv_flann",
+    "-lopencv_xphoto",
+    "-lopencv_photo",
+    "-lopencv_imgproc",
+    "-lopencv_core"
+  ],
+  "affinity_checks": [
+    {
+      "requested": 1,
+      "actual": 1,
+      "cpus": [
+        4
+      ],
+      "physical_cores_used": 1,
+      "uses_smt_siblings": false
+    },
+    {
+      "requested": 2,
+      "actual": 2,
+      "cpus": [
+        4,
+        5
+      ],
+      "physical_cores_used": 2,
+      "uses_smt_siblings": false
+    },
+    {
+      "requested": 4,
+      "actual": 4,
+      "cpus": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "physical_cores_used": 4,
+      "uses_smt_siblings": false
+    },
+    {
+      "requested": 6,
+      "actual": 6,
+      "cpus": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "physical_cores_used": 6,
+      "uses_smt_siblings": false
+    },
+    {
+      "requested": 8,
+      "actual": 8,
+      "cpus": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "physical_cores_used": 8,
+      "uses_smt_siblings": false
+    }
+  ],
+  "prepared_output_comparisons": 1125,
+  "cli_8k_png_comparisons": 15,
+  "finish": "2026-11-25T16:48:49.567175-03:00",
+  "load_end": "3.24 1.71 0.85 1/603 16508",
+  "memory_end": "MemTotal:        7278960 kB\nMemFree:         4140972 kB\nMemAvailable:    5339876 kB\nBuffers:           71044 kB\nCached:          1552592 kB\nSwapCached:            0 kB\nActive:          1499748 kB\nInactive:         431224 kB\nActive(anon):     539764 kB\nInactive(anon):        0 kB\nActive(file):     959984 kB\nInactive(file):   431224 kB\nUnevictable:       91880 kB\nMlocked:               0 kB\nSwapTotal:      16777212 kB\nSwapFree:       16777212 kB\nZswap:                 0 kB\nZswapped:              0 kB\nDirty:               100 kB\nWriteback:             0 kB\nAnonPages:        399340 kB\nMapped:           457640 kB\nShmem:            232680 kB\nKReclaimable:      67188 kB\nSlab:             277524 kB\nSReclaimable:      67188 kB\nSUnreclaim:       210336 kB\nKernelStack:        9840 kB\nPageTables:        17820 kB\nSecPageTables:      3436 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nWritebackTmp:          0 kB\nCommitLimit:    20416692 kB\nCommitted_AS:    3796408 kB\nVmallocTotal:   34359738367 kB\nVmallocUsed:      118348 kB\nVmallocChunk:          0 kB\nPercpu:            13056 kB\nHardwareCorrupted:     0 kB\nAnonHugePages:         0 kB\nShmemHugePages:    86016 kB\nShmemPmdMapped:        0 kB\nFileHugePages:         0 kB\nFilePmdMapped:         0 kB\nCmaTotal:              0 kB\nCmaFree:               0 kB\nUnaccepted:            0 kB\nBalloon:               0 kB\nHugePages_Total:       0\nHugePages_Free:        0\nHugePages_Rsvd:        0\nHugePages_Surp:        0\nHugepagesize:       2048 kB\nHugetlb:               0 kB\nDirectMap4k:      572540 kB\nDirectMap2M:     4347904 kB\nDirectMap1G:     4194304 kB",
+  "configurations": 270,
+  "valid_samples": 810,
+  "high_cv_count": 84
+}
